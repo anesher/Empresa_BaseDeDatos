@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class conectar {
+public class Conectar {
     private static final String CONTROLADOR = "com.mysql.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost:4232/empresa?allowPublicKeyRetrieval=true&useSSL=false";
+    private static final String URL = "jdbc:mysql://localhost:4232/empresa?allowPublicKeyRetrieval=true";
     private static final String USUARIO = "root";
     private static final String CLAVE = "1234";
 
