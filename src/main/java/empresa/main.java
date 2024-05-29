@@ -10,7 +10,6 @@ public class main {
         Conectar conexion = new Conectar();
         Connection cn = null;
         Statement stm = null;
-        ResultSet rs = null;
         try {
             cn = conexion.conectar();
             stm = cn.createStatement();
@@ -26,7 +25,17 @@ public class main {
             metodo.insertarUsuario("29", "maximiliano", "Ventas", "22","dieta");
             metodo.insertarUsuario("30", "teodoro", "informatica", "50","dieta");
             metodo.insertarUsuario("31", "cleopatra", "Ventas", "22","dieta");
-            rs = stm.executeQuery("SELECT * FROM empleado WHERE euros > 30 && departamento = informatica");
+            String query = "SELECT * FROM empresa WHERE euros > 30 AND departamento = 'Informatica'";
+            try (ResultSet rs = stm.executeQuery(query)) {
+                while (rs.next()) {
+                    // Procesa el resultado aquí
+                    System.out.println("ID: " + rs.getString("id") +
+                            ", Nombre: " + rs.getString("nombre") +
+                            ", Departamento: " + rs.getString("departamento") +
+                            ", Edad: " + rs.getString("edad") +
+                            ", Euros: " + rs.getString("euros"));
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

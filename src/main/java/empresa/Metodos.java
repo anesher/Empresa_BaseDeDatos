@@ -15,7 +15,7 @@ public class Metodos implements Interfaz {
     // Crear la tabla usuarios si no existe
     @Override
     public void crearTabla() throws SQLException {
-        String sql = "CREATE TABLE IF NOT EXISTS usuarios ("
+        String sql = "CREATE TABLE IF NOT EXISTS empresa ("
                 + "ID VARCHAR(12) NOT NULL PRIMARY KEY, "
                 + "empleado VARCHAR(45), "
                 + "departamento VARCHAR(45), "
