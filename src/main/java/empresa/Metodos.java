@@ -27,7 +27,13 @@ public class Metodos implements Interfaz {
     }
 
     @Override
-    public void insertarUsuario(String dni, String nombre, String pais) throws SQLException {
+    public void insertarUsuario(String ID, String empleado, String departamento, String euros, String concepto) throws SQLException {
 
     }
+
+    @Override
+    public void Consulta() throws SQLException {
+
+    }
+
 }
