@@ -1,44 +1,50 @@
 package empresa;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Metodos implements Interfaz {
-    private final Connection conexion;
+    public void crearTabla() {
+        Connection cn = null;
+        Statement stm = null;
+        ResultSet resultado = null;
 
-    // Constructor que recibe una conexión a la base de datos
-    public Metodos (Connection conexion) {
-        this.conexion = conexion;
-    }
-
-    // Crear la tabla usuarios si no existe
-    @Override
-    public void crearTabla() throws SQLException {
-        String sql = "CREATE TABLE IF NOT EXISTS empresa ("
-                + "ID VARCHAR(12) NOT NULL PRIMARY KEY, "
-                + "empleado VARCHAR(45) NOT NULL, "
-                + "departamento VARCHAR(45) NOT NULL, "
-                + "euros DECIMAL(10, 2) NOT NULL "
-                + "concepto VARCHAR(45)NOT NULL )";
-        try (Statement stm = conexion.createStatement()) {
-            stm.executeUpdate(sql);
+        try {
+            cn = Conectar.conectar();
+            stm = cn.createStatement();
+            resultado = stm.executeQuery("SHOW TABLES LIKE 'dietas';");
+            //para ver si esta la tabla hecha
+            if (!resultado.next()) {
+                String sql = "CREATE TABLE dietas ("
+                        + "id INT NOT NULL AUTO_INCREMENT,"
+                        + "empleado VARCHAR(100) NOT NULL, "
+                        + "departamento VARCHAR(100) NOT NULL,"
+                        + "importe FLOAT NOT NULL,"
+                        + "concepto VARCHAR(255) NOT NULL,"
+                        + "PRIMARY KEY (id));";
+                stm.executeUpdate(sql);
+                System.out.println("Tabla creada correctamente");
+            } else {
+                System.out.println("La Tabla ya existe");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    public void insertarUsuario(String ID, String empleado, String departamento, double euros, String concepto) throws SQLException {
-        String sql = "INSERT INTO usuarios (DNI, nombre, pais) VALUES (?, ?, ?)";
-        try (PreparedStatement pst = conexion.prepareStatement(sql)) {
-            pst.setString(1, ID);
-            pst.setString(2, empleado);
-            pst.setString(3, departamento);
-            pst.setDouble(4, euros);
-            pst.setString(5, concepto);
-            pst.executeUpdate();
+    public void insertarDato() {
+        Connection cn = null;
+        Statement stm = null;
+        ResultSet resultado = null;
+
+        try {
+            cn = Conectar.conectar();
+            stm = cn.createStatement();
+            stm.executeUpdate("INSERT INTO dietas (empleado, departamento, importe, concepto) VALUES ('jose', 'comercial', 300, 'Envio rapido');");
+            System.out.println("Usuario insertado correctamente");
+        } catch (SQLException e) {
+            System.out.println("Usuario no se ha podido agregar");
+            e.printStackTrace();
         }
     }
-
-
 }
