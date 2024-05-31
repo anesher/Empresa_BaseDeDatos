@@ -6,7 +6,6 @@ public class main {
       Conectar.conectar();
 
         Metodos metodos= new Metodos();
-       metodos.crearTabla();
-       metodos.insertarDato();
+       metodos.creartablaForanea();
     }
 }
