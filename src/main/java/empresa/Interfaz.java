@@ -1,12 +1,8 @@
 package empresa;
 
-import java.sql.SQLException;
-
 public interface Interfaz {
 
-    void insertarDato();
-    void insertarDatoTrans();
+    void insertarUsuario(String username, String password, String permisos);
 
-   // void modificarDato();
-    void borrarTabla();
+    public UsuarioDTO getUsuario(String user, String password);
 }

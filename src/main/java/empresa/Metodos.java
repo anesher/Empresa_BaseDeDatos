@@ -8,7 +8,58 @@ import java.sql.Statement;
 
 public class Metodos implements Interfaz {
 
-    public void borrarTabla() {
+
+    @Override
+    public void insertarUsuario(String username, String password, String permisos) {
+        Connection cn = null;
+        Statement stm = null;
+        ResultSet rs = null;
+
+        try {
+            cn = Conectar.conectar();
+            stm = cn.createStatement();
+            String sql = String.format(
+                    "INSERT INTO usuarios (username, password, permisos) VALUES ('%s', '%s', '%s');",
+                    username, password, permisos
+            );
+            stm.executeUpdate(sql);
+            System.out.println("Usuario insertado correctamente");
+        } catch (SQLException e) {
+            System.out.println("El usuario no se ha podido insertar");
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public UsuarioDTO getUsuario(String user, String password){
+        Connection cn = null;
+        Statement stm = null;
+        ResultSet rs = null;
+
+        try {
+            cn = Conectar.conectar();
+            stm = cn.createStatement();
+            String sql = String.format(
+                    "SELECT * FROM usuarios WHERE username = '%s' AND password = '%s';",
+                    user, password
+            );
+            rs = stm.executeQuery(sql);
+            if (rs.next()) {
+                int id = rs.getInt("id_user");
+                String username = rs.getString("username");
+                String pass = rs.getString("password");
+                String permisos = rs.getString("permisos");
+                UsuarioDTO usuarioDTO = new UsuarioDTO(id, username, pass, permisos);
+                return usuarioDTO;
+            }else{
+                throw new Exception("El usuario no existe");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    }
+        /* public void borrarTabla() {
         String sqlDrop = "DROP TABLE IF EXISTS empresa";
         try (Connection cn = Conectar.conectar();
              Statement stm = cn.createStatement()) {
@@ -19,7 +70,9 @@ public class Metodos implements Interfaz {
             System.out.println("No se pudo borrar la tabla usuarios");
             e.printStackTrace();
         }
-    }
+    }*/
+
+    /*
     public void crearTabla() {
         Connection cn = null;
         Statement stm = null;
@@ -45,71 +98,6 @@ public class Metodos implements Interfaz {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void insertarDato() {
-        Connection cn = null;
-        Statement stm = null;
-        ResultSet resultado = null;
-        try {
-            cn = Conectar.conectar();
-            stm = cn.createStatement();
-            stm.executeUpdate("INSERT INTO usuarios (username, password, permisos) VALUES ('antonio', 6525, 'todos');");
-            System.out.println("Usuario insertado correctamente");
-        } catch (SQLException e) {
-            System.out.println("Usuario no se ha podido agregar");
-            e.printStackTrace();
-        }
-    }
+    } */
 
 
-    public void creartablaForanea(){
-        Connection cn = null;
-        Statement stm = null;
-        ResultSet resultado = null;
-        try {
-            cn = Conectar.conectar();
-            stm = cn.createStatement();
-            resultado = stm.executeQuery("SHOW TABLES LIKE 'transicion';");
-            //para ver si esta la tabla hecha
-            if (!resultado.next()) {
-                String sql = "CREATE TABLE transicion ("
-                        + "id_transicion INT NOT NULL AUTO_INCREMENT,"
-                        + "nombre VARCHAR(200) NOT NULL, "
-                        + "departamento VARCHAR(255) NOT NULL,"
-                        + "importe INT NOT NULL,"
-                        + "concepto VARCHAR (255) NOT NULL,"
-                        + "id_user INT NOT NULL,"
-                        + "PRIMARY KEY (id_transicion),"
-                        + "FOREIGN KEY (id_user) REFERENCES usuarios(id_user));";
-                stm.executeUpdate(sql);
-                System.out.println("Tabla creada correctamente");
-            } else {
-                System.out.println("La Tabla ya existe");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void insertarDatoTrans() {
-        Connection cn = null;
-        Statement stm = null;
-        ResultSet resultado = null;
-
-        try {
-            cn = Conectar.conectar();
-            stm = cn.createStatement();
-            stm.executeUpdate("INSERT INTO transicion (nombre, departamento, importe, concepto) VALUES ('antonio', 'informatica', 687, 'todos');");
-            System.out.println("Usuario insertado correctamente");
-        } catch (SQLException e) {
-            System.out.println("Usuario no se ha podido agregar");
-            e.printStackTrace();
-        }
-    }
-
-
-}
-// id_transicion, nombre, departamento, importe, concepto, id_user
