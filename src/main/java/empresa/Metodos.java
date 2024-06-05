@@ -58,7 +58,27 @@ public class Metodos implements Interfaz {
         }
         return null;
     }
+    public void mostrarResultados(){
+        Connection cn = null;
+        Statement stm = null;
+        ResultSet rs = null;
+        try {
+            cn = Conectar.conectar();
+            stm = cn.createStatement();
+            rs = stm.executeQuery("SELECT * FROM usuarios");
+            while (rs.next()) {
+                String username = rs.getString("username");
+                int password = rs.getInt("password");
+                String permisos = rs.getString("permisos");
+                System.out.println(username + " - " + password + " - " + permisos);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+    }
+
+
         /* public void borrarTabla() {
         String sqlDrop = "DROP TABLE IF EXISTS empresa";
         try (Connection cn = Conectar.conectar();

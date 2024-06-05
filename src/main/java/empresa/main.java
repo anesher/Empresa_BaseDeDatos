@@ -15,6 +15,7 @@ public class main {
             System.out.println("1. Iniciar sesión");
             System.out.println("2. Registrarse");
             System.out.println("3. Realizar transación");
+            System.out.println("4. Mostrar usuarios");
             System.out.println("9. Para el proceso");
             opcion = sc.nextInt();
             sc.nextLine();
@@ -56,6 +57,12 @@ public class main {
                     int id_user = usuarioActivo.getId_user();
 
                     transacion.insertarDato(nombre, departamento, importe, concepto, id_user);
+                }
+            }else if(opcion==4){
+                if(usuario == null){
+                    System.out.println("Tienes que iniciar sesión");
+                }else{
+                    usuario.mostrarResultados();
                 }
             }
         } while (opcion != 9);
